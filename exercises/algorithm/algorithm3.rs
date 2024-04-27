@@ -4,12 +4,12 @@
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
 
-fn sort<T>(array: &mut [T]){
-    let len = arr.len();
+fn sort<T: std::cmp::PartialOrd>(array: &mut [T]){
+    let len = array.len();
     for _ in 0..len {
         for j in 0..len - 1 {
-            if arr[j] > arr[j + 1] {
-                arr.swap(j, j + 1);
+            if array[j] > array[j + 1] {
+                array.swap(j, j + 1);
             }
         }
     }
