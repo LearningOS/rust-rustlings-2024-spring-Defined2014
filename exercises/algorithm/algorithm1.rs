@@ -2,7 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -29,13 +28,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: std::cmp::PartialOrd> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: std::cmp::PartialOrd> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,15 +68,43 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
-	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+
+    pub fn merge(mut list_a: Self, mut list_b: Self) -> Self
+    where
+        T: Clone,
+    {
+        let mut result = Self::new();
+
+        let (mut a_idx, mut b_idx) = (0, 0);
+        let (mut a, mut b) = (list_a.get(0), list_b.get(0));
+        while a.is_some() && b.is_some() {
+            let a_val = a.unwrap();
+            let b_val = b.unwrap();
+
+            if a_val < b_val {
+                result.add(a_val.clone());
+                a_idx = a_idx + 1;
+                a = list_a.get(a_idx);
+            } else {
+                result.add(b_val.clone());
+                b_idx = b_idx + 1;
+                b = list_b.get(b_idx);
+            }
         }
-	}
+
+        while a.is_some() {
+            result.add(a.unwrap().clone());
+            a_idx = a_idx + 1;
+            a = list_a.get(a_idx);
+        }
+
+        while b.is_some() {
+            result.add(b.unwrap().clone());
+            b_idx = b_idx + 1;
+            b = list_b.get(b_idx);
+        }
+        result
+    }
 }
 
 impl<T> Display for LinkedList<T>
@@ -135,7 +162,7 @@ mod tests {
 		let vec_a = vec![1,3,5,7];
 		let vec_b = vec![2,4,6,8];
 		let target_vec = vec![1,2,3,4,5,6,7,8];
-		
+
 		for i in 0..vec_a.len(){
 			list_a.add(vec_a[i]);
 		}
