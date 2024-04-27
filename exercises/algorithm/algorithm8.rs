@@ -1,6 +1,6 @@
 /*
 	queue
-	This question requires you to use queues to implement the functionality of the stac
+	This question requires you to use queues to implement the functionality of the stack
 */
 // I AM NOT DONE
 
@@ -82,7 +82,7 @@ impl<T> myStack<T> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	
+
 	#[test]
 	fn test_queue(){
 		let mut s = myStack::<i32>::new();
